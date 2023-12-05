@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('pertanyaan', function (Blueprint $table) {
             $table->id(); // Instead of id_pertanyaan INT PRIMARY KEY
             $table->foreignId('kuesioner_id')->constrained('kuesioner')->onDelete('cascade');
-            $table->integer('jenis');
+            $table->string('jenis');
             $table->text('pertanyaan');
             $table->text('pilihan_jawaban')->nullable();
             $table->timestamps();

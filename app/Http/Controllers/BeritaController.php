@@ -12,11 +12,12 @@ class BeritaController extends Controller
     {
         $Berita = Berita::all();
         return view('Berita', [
-            'berita' => $Berita
+            'berita' => $Berita,
+            'title' => 'Berita'
         ]);
     }
 
-    public function berita_tambah(Request $request)
+    public function tambah(Request $request)
     {
         // Validation logic here
 
@@ -24,14 +25,13 @@ class BeritaController extends Controller
         $gambarPath = null;
         if ($request->hasFile('gambar')) {
             $gambar = $request->file('gambar');
-            $gambarPath = 'upload_foto/' . $gambar->getClientOriginalName();
-            $gambar->move(public_path('upload_foto'), $gambarPath);
+            $gambarPath = 'berita_upload/' . $gambar->getClientOriginalName();
+            $gambar->move(public_path(), $gambarPath);
         }
 
         Berita::create([
             'judul' => $request->input('judul'),
             'isi' => $request->input('isi'),
-            'tanggal' => now(),
             'kategori' => $request->input('kategori'),
             'gambar' => $gambarPath,
         ]);
@@ -39,7 +39,7 @@ class BeritaController extends Controller
         return redirect()->route('berita')->with('success', 'News created successfully');
     }
 
-    public function berita_update(Request $request, $id)
+    public function update(Request $request, $id)
     {
         // Validation logic here
 
@@ -50,8 +50,8 @@ class BeritaController extends Controller
             // Delete the previous image if it exists
             $gambarPath = null;
             $gambar = $request->file('gambar');
-            $gambarPath = 'upload_foto/' . $gambar->getClientOriginalName();
-            $gambar->move(public_path('upload_foto'), $gambarPath);
+            $gambarPath = 'berita_upload/' . $gambar->getClientOriginalName();
+            $gambar->move(public_path(), $gambarPath);
 
             // Update news with new image path
             $news->update([
@@ -71,7 +71,7 @@ class BeritaController extends Controller
 
         return redirect()->route('berita')->with('success', 'News updated successfully');
     }
-    public function berita_hapus($id)
+    public function hapus($id)
     {
         Berita::where('id',$id)->delete();
         return redirect()->route('berita')->with('success', 'Berita deleted successfully');

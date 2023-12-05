@@ -9,11 +9,12 @@ class Kuesioner extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'isi',
         'judul',
         'deskripsi',
-        'kategori',
-        'tanggal'
     ];
-    protected $table = 'berita';
+    protected $table = 'kuesioner';
+
+    function pertanyaan(){
+        return $this->hasMany(Pertanyaan::class);
+    }
 }

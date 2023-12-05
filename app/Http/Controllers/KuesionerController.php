@@ -11,65 +11,41 @@ class KuesionerController extends Controller
     {
         $kuesioner = kuesioner::all();
         return view('kuesioner', [
-            'kuesioner' => $kuesioner
+            'kuesioner' => $kuesioner,
+            'title' => 'Kuesioner'
         ]);
     }
 
-    public function kuesioner_tambah(Request $request)
+    public function tambah(Request $request)
     {
-        $gambarPath = null;
-        if ($request->hasFile('gambar')) {
-            $gambar = $request->file('gambar');
-            $gambarPath = 'upload_foto/' . $gambar->getClientOriginalName();
-            $gambar->move(public_path('upload_foto'), $gambarPath);
-        }
-
-        kuesioner::create([
+        $k = kuesioner::create([
             'judul' => $request->input('judul'),
-            'isi' => $request->input('isi'),
-            'tanggal' => now(),
-            'kategori' => $request->input('kategori'),
-            'gambar' => $gambarPath,
+            'deskripsi' => $request->input('deskripsi'),
         ]);
 
-        return redirect()->route('kuesioner')->with('success', 'News created successfully');
+        return redirect()->route('pertanyaan',$k->id)->with('success', 'kuesioner created successfully');
     }
 
-    public function kuesioner_update(Request $request, $id)
+    public function update(Request $request, $id)
     {
-        // Validation logic here
+        $kuesioner = kuesioner::findOrFail($id);
 
-        $news = kuesioner::findOrFail($id);
+        $kuesioner->update([
+            'judul' => $request->input('judul'),
+            'deskripsi' => $request->input('deskripsi'),
+        ]);
 
-        // Handle file upload if a new image is provided
-        if ($request->hasFile('gambar')) {
-            // Delete the previous image if it exists
-            $gambarPath = null;
-            $gambar = $request->file('gambar');
-            $gambarPath = 'upload_foto/' . $gambar->getClientOriginalName();
-            $gambar->move(public_path('upload_foto'), $gambarPath);
-
-            // Update news with new image path
-            $news->update([
-                'judul' => $request->input('judul'),
-                'isi' => $request->input('isi'),
-                'kategori' => $request->input('kategori'),
-                'gambar' => $gambarPath,
-            ]);
-        } else {
-            // Update news without changing the image
-            $news->update([
-                'judul' => $request->input('judul'),
-                'isi' => $request->input('isi'),
-                'kategori' => $request->input('kategori'),
-            ]);
-        }
-
-        return redirect()->route('kuesioner')->with('success', 'News updated successfully');
+        return redirect()->route('kuesioner')->with('success', 'kuesioner updated successfully');
     }
-    public function kuesioner_hapus($id)
+    public function hapus($id)
     {
-        kuesioner::where('id',$id)->delete();
+        kuesioner::where('id', $id)->delete();
         return redirect()->route('kuesioner')->with('success', 'kuesioner deleted successfully');
+    }
+    public function jawaban($id){
+        return view('kuesioner_jawaban',[
+            'kuesioner' => Kuesioner::find($id),
+            'title' => 'Hasil Kuesioner'
+        ]);
     }
 }

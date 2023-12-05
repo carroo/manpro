@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name', 50);
             $table->string('email', 50);
             $table->string('password');
+            $table->text('alamat')->nullable();
             $table->string('no_hp', 15)->nullable();
             $table->string('nim', 50)->nullable();
             $table->integer('tahun_lulus')->nullable();

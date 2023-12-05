@@ -13,7 +13,6 @@ class Berita extends Model
         'judul',
         'gambar',
         'kategori',
-        'tanggal'
     ];
     protected $table = 'berita';
 }
