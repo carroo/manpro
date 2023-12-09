@@ -30,6 +30,18 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password'),
             'role' => 0
         ]);
+        User::create([
+            'name' => 'm1',
+            'email' => 'mahasiswa1@gmail.com',
+            'password' => Hash::make('password'),
+            'role' => 1
+        ]);
+        User::create([
+            'name' => 'm2',
+            'email' => 'mahasiswa2@gmail.com',
+            'password' => Hash::make('password'),
+            'role' => 1
+        ]);
         Kuesioner::create([
             'judul' => 'Kuesioner Alumni 2034',
             'deskripsi' => '<p> membantu ppg unesa untuk mendata </p>'

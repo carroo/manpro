@@ -55,7 +55,8 @@
                     <li><a class="nav-link {{ request()->routeIs('user-alumni-list') ? 'active' : '' }}"
                             href="{{ route('user-alumni-list') }}">Alumni</a></li>
                     @if (auth()->check())
-                        <li><a class="nav-link " href="">Profile</a></li>
+                        <li><a class="nav-link {{ request()->routeIs('user-profile') ? 'active' : '' }}"
+                                href="{{ route('user-profile') }}">Profile</a></li>
                         <li><a class="getstarted scrollto" href="{{ route('logout') }}"
                                 onclick="event.preventDefault();
                                          document.getElementById('logout-form').submit();">Logout</a>
@@ -82,25 +83,13 @@
     <footer id="footer">
         <div class="container">
             <div class="row d-flex align-items-center">
-                <div class="col-lg-6 text-lg-left text-center">
+                <div class="col-lg-6 text-center mx-auto">
                     <div class="copyright">
                         &copy; Copyright
                     </div>
                     <div class="credits">
-                        <!-- All the links in the footer should remain intact. -->
-                        <!-- You can delete the links only if you purchased the pro version. -->
-                        <!-- Licensing information: https://bootstrapmade.com/license/ -->
-                        <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/vesperr-free-bootstrap-template/ -->
                         Designed by <a>Kelompok 2 TI B</a>
                     </div>
-                </div>
-                <div class="col-lg-6">
-                    <nav class="footer-links text-lg-right text-center pt-2 pt-lg-0">
-                        <a href="#intro" class="scrollto">Home</a>
-                        <a href="#about" class="scrollto">About</a>
-                        <a href="#">Privacy Policy</a>
-                        <a href="#">Terms of Use</a>
-                    </nav>
                 </div>
             </div>
         </div>
@@ -120,6 +109,8 @@
 
     <!-- Template Main JS File -->
     <script src="{{ asset('user/assets/js/main.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>f
+    @yield('script')
 
 </body>
 
