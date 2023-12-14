@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class RegisterController extends Controller
 {
@@ -51,8 +52,23 @@ class RegisterController extends Controller
     {
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'email' => [
+                'required',
+                'string',
+                'email',
+                'max:255',
+                'unique:users',
+                function ($attribute, $value, $fail) {
+                    // Check if the email domain is "mhs.unesa.ac.id"
+
+                    if (!Str::endsWith($value, '@mhs.unesa.ac.id')) {
+                        $fail('The ' . $attribute . ' must have the domain @mhs.unesa.ac.id.');
+                    }
+                },
+            ],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'tahun_lulus' => ['required'],
+            'program_studi' => ['required'],
         ]);
     }
 
@@ -68,6 +84,8 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'tahun_lulus' => $data['tahun_lulus'],
+            'program_studi' => $data['program_studi']
         ]);
     }
 }

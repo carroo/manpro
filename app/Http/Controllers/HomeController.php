@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Berita;
+use App\Models\Kuesioner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -26,7 +28,9 @@ class HomeController extends Controller
     {
         if (Auth::user()->role == 0) {
             return view('home', [
-                'title' => 'Home'
+                'title' => 'Home',
+                'berita' => Berita::count(),
+                'kuesioner' => Kuesioner::count(),
             ]);
         } else {
             return redirect()->route('dashboard');

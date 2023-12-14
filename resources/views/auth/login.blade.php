@@ -4,8 +4,8 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('admin/assets/img/apple-icon.png') }}">
-    <link rel="icon" type="image/png" href="{{ asset('admin/assets/img/favicon.png') }}">
+    <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('admin/assets/img/...') }}">
+    <link rel="icon" type="image/png" href="{{ asset('admin/assets/img/unesa.png') }}">
     <title>
         Login Tracer Study PPG Unesa
     </title>
@@ -44,7 +44,7 @@
                             <ul class="navbar-nav mx-auto ms-xl-auto me-xl-7">
                                 <li class="nav-item">
                                     <a class="nav-link d-flex align-items-center me-2 active" aria-current="page"
-                                        href="{{ route('home') }}">
+                                        href="{{ route('dashboard') }}">
                                         <i class="fa fa-chart-pie opacity-6 text-dark me-1"></i> Dashboard
                                     </a>
                                 </li>

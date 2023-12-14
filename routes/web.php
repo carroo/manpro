@@ -58,3 +58,7 @@ Route::get('/kuesioner-hasil', [App\Http\Controllers\UserController::class, 'kue
 Route::get('/', [App\Http\Controllers\UserController::class, 'dashboard'])->name('dashboard');
 Route::get('/tentang', [App\Http\Controllers\UserController::class, 'tentang'])->name('tentang');
 Route::get('/profile', [App\Http\Controllers\UserController::class, 'profile'])->name('user-profile');
+Route::post('/profile', [App\Http\Controllers\UserController::class, 'profile_update'])->name('user-profile-update');
+Route::get('/profile-pekerjaan', [App\Http\Controllers\UserController::class, 'profile_pekerjaan'])->name('user-profile-pekerjaan');
+Route::post('/profile-pekerjaan-tambah', [App\Http\Controllers\UserController::class, 'profile_pekerjaan_tambah'])->name('user-profile-pekerjaan-tambah');
+Route::get('/profile-pekerjaan-hapus/{id}', [App\Http\Controllers\UserController::class, 'profile_pekerjaan_hapus'])->name('user-profile-pekerjaan-hapus');

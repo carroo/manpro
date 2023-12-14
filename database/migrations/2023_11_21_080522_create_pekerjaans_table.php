@@ -20,7 +20,7 @@ return new class extends Migration
             $table->date('tanggal_mulai_pekerjaan');
             $table->date('tanggal_selesai_pekerjaan')->nullable();
             $table->string('alasan_berhenti')->nullable();
-            $table->integer('rekomendasi');
+            $table->integer('rekomendasi')->nullable();
             $table->timestamps();
         });
     }

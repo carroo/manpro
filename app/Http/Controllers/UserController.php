@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Berita;
 use App\Models\Jawaban;
 use App\Models\Kuesioner;
+use App\Models\Pekerjaan;
 use App\Models\Pertanyaan;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -133,5 +135,37 @@ class UserController extends Controller
     public function tentang()
     {
         return view('user.tentang');
+    }
+    public function profile()
+    {
+        return view('user.profile');
+    }
+    public function profile_update(Request $request)
+    {
+        User::find(Auth::user()->id)->update([
+            'name' => $request->name,
+            'alamat' => $request->alamat,
+            'no_hp' => $request->no_hp,
+            'ipk' => $request->ipk
+        ]);
+        return back();
+    }
+    public function profile_pekerjaan()
+    {
+        return view('user.profile-pekerjaan');
+    }
+    public function profile_pekerjaan_tambah(Request $request)
+    {
+        Pekerjaan::create([
+            'alumni_id'=> Auth::user()->id,
+            'nama_perusahaan'=> $request->nama_perusahaan,
+            'jabatan'=> $request->jabatan,
+            'gaji'=> $request->gaji,
+            'tanggal_mulai_pekerjaan'=> $request->tanggal_mulai,
+            'tanggal_selesai_pekerjaan'=> $request->tanggal_berakhir,
+            'alasan_berhenti'=> $request->alasan_berhenti,
+            'rekomendasi'=> $request->rekomendasi,
+        ]);
+        return back();
     }
 }

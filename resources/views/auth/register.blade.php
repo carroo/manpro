@@ -4,8 +4,8 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
-    <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="{{asset ('admin/assets/img/...') }}" >
+    <link rel="icon" type="image/png" href="{{asset ('admin/assets/img/unesa.png') }}">
     <title>
         Register Tracer Study PPG Unesa
     </title>
@@ -44,7 +44,7 @@
                             <ul class="navbar-nav mx-auto ms-xl-auto me-xl-7">
                                 <li class="nav-item">
                                     <a class="nav-link d-flex align-items-center me-2 active" aria-current="page"
-                                        href="{{ route('home') }}">
+                                        href="{{ route('dashboard') }}">
                                         <i class="fa fa-chart-pie opacity-6 text-dark me-1"></i> Dashboard
                                     </a>
                                 </li>
@@ -74,7 +74,8 @@
                         <div class="col-xl-4 col-lg-5 col-md-6 d-flex flex-column mx-auto">
                             <div class="card card-plain mt-8">
                                 <div class="card-header pb-0 text-left bg-transparent">
-                                    <h3 class="font-weight-bolder text-info text-gradient">Selamat Datang di Website Tracer Study PPG Unesa</h3>
+                                    <h3 class="font-weight-bolder text-info text-gradient">Selamat Datang di Website
+                                        Tracer Study PPG Unesa</h3>
                                     <p class="mb-0">Silahkan Daftarkan Akun Anda</p>
                                 </div>
                                 <div class="card-body">
@@ -123,7 +124,62 @@
                                             <input id="password_confirm" type="password" aria-label="PasswordConfirm"
                                                 aria-describedby="passwordConfirm-addon"
                                                 class="form-control @error('password_confirmation') is-invalid @enderror"
-                                                name="password_confirmation" required autocomplete="password_confirmation">
+                                                name="password_confirmation" required
+                                                autocomplete="password_confirmation">
+                                        </div>
+                                        <label>Program Studi</label>
+                                        <div class="mb-3">
+                                            <select name="program_studi" class="form-control" required>
+                                                <option value="" disabled selected>Pilih Program Studi</option>
+                                                <option value="Pendidikan Guru SD">Pendidikan Guru SD
+                                                </option>
+                                                <option value="Bimbingan dan Konseling">Bimbingan dan Konseling
+                                                </option>
+                                                <option value="Pendidikan Kewarganegaraan">Pendidikan Kewarganegaraan
+                                                </option>
+                                                <option value="Pendidikan Jasmani, Kesehatan, dan Rekreasi">Pendidikan
+                                                    Jasmani, Kesehatan, dan Rekreasi
+                                                </option>
+                                                <option value="Bahasa Inggris">Bahasa Inggris
+                                                </option>
+                                                <option value="Matematika">Matematika
+                                                </option>
+                                                <option value="Ekonomi">Ekonomi
+                                                </option>
+                                                <option value="Sejarah">Sejarah
+                                                </option>
+                                                <option value="Akuntansi dan Keuangan">Akuntansi dan Keuangan
+                                                </option>
+                                                <option value="Teknologi Informasi dan Komunikasi">Teknologi Informasi
+                                                    dan Komunikasi
+                                                </option>
+                                                <option value="Teknik Otomotif">Teknik Otomotif
+                                                </option>
+                                                <option value="Perhotelan dan Jasa Pariwisata">Perhotelan dan Jasa
+                                                    Pariwisata
+                                                </option>
+                                                <option value="Agribisnis Tanaman Pangan dan Holtikultura">Agribisnis
+                                                    Tanaman Pangan dan Holtikultura
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <label>Tahun Lulus</label>
+                                        <div class="mb-3">
+                                            <select name="tahun_lulus" class="form-control" required>
+                                                <option value="" disabled selected>Pilih Tahun Lulus</option>
+                                                <option value="2020">2020
+                                                </option>
+                                                <option value="2021">2021
+                                                </option>
+                                                <option value="2022">2022
+                                                </option>
+                                                <option value="2023">2023
+                                                </option>
+                                                <option value="2024">2024
+                                                </option>
+                                                <option value="2025">2025
+                                                </option>
+                                            </select>
                                         </div>
                                         <div class="text-center">
                                             <button type="submit" class="btn bg-gradient-info w-100 mt-4 mb-0">Sign
