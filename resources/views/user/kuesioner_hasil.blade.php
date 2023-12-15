@@ -9,19 +9,45 @@
                     <h2>Hasil Kuesioner</h2>
                     <p></p>
                 </div>
-                <div class="card mb-4">
-                    <div class="card-header bg-primary">
-                        <h2 class="text-white"><b>Keselarasan Diagram</b></h2>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-4 mx-auto">
-                                <canvas id="myChart" width="200" height="200"></canvas>
+                @foreach ($data as $key => $value)
+                    <div class="card mb-4">
+                        <div class="card-header bg-primary">
+                            <h4 class="text-white"><b>Diagram Hasil Kuesioner {{ $value['judul'] }}</b></h4>
+                        </div>
+                        <div class="card-body row">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    @foreach ($value['pertanyaan'] as $ke => $va)
+                                        @if ($va['jenis'] == 'pilihan' || $va['jenis'] == 'number')
+                                            <div class="col-md-3 mx-auto mb-3">
+                                                <div class="card h-100">
+                                                    <div class="card-header h-100">
+                                                        <h6>{{ $va['pertanyaan'] }}</h6>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <canvas id="myChart{{ $key }}{{ $ke }}"
+                                                            style="height: 120px"></canvas>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @else
+                                            <div class="col-md-3 mx-auto mb-3">
+                                                <div class="card h-100">
+                                                    <div class="card-header h-100">
+                                                        <h6>{{ $va['pertanyaan'] }}</h6>
+                                                    </div>
+                                                    <div class="card-body">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    @endforeach
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="card">
+                @endforeach
+                {{-- <div class="card">
                     <div class="card-header bg-primary">
                         <h2 class="text-white"><b>Tabel Keselarasan</b></h2>
                     </div>
@@ -55,7 +81,7 @@
                             </tbody>
                         </table>
                     </div>
-                </div>
+                </div> --}}
 
             </div>
         </section><!-- End Testimonials Section -->
@@ -63,13 +89,9 @@
     </main>
 @endsection
 @section('script')
-    <script>
-        // Your PHP data ($jawaban) goes herevar
-        jawabanData = <?php echo json_encode($data['semua']); ?>;
-
-        // Extract keys and values for the chart
-        var labels = Object.keys(jawabanData);
-        var dataValues = Object.values(jawabanData);
+    {{-- <script>
+        var labels = @json(array_keys($data['semua']));
+        var dataValues = @json(array_values($data['semua']))
 
         // Create a pie chart using Chart.js
         var ctx = document.getElementById('myChart').getContext('2d');
@@ -85,9 +107,88 @@
                 }]
             },
         });
-    </script>
+    </script> --}}
+    @foreach ($data as $key => $value)
+        @foreach ($value['pertanyaan'] as $ke => $va)
+            @if ($va['jenis'] == 'pilihan')
+                <script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        var ctx = document.getElementById('myChart{{ $key }}{{ $ke }}').getContext('2d');
+                        var data = {
+                            labels: @json(array_keys($va['jawaban'])), // Labels berisi nama program studi
+                            datasets: [{
+                                label: 'Jumlah Alumni',
+                                data: @json(array_values($va['jawaban'])), // Data berisi jumlah alumni per program studi
+                                backgroundColor: generateRandomColorArray({{ count($va['jawaban']) }}),
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                borderWidth: 1
+                            }]
+                        };
+                        var options = {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        };
+                        var myChart = new Chart(ctx, {
+                            type: 'pie',
+                            data: data,
+                            options: options
+                        });
+                    });
 
-    </body>
+                    function generateRandomColorArray(length) {
+                        var colors = [];
+                        for (var i = 0; i < length; i++) {
+                            var color = 'rgba(' + Math.floor(Math.random() * 256) + ',' +
+                                Math.floor(Math.random() * 256) + ',' +
+                                Math.floor(Math.random() * 256) + ', 0.8)';
+                            colors.push(color);
+                        }
+                        return colors;
+                    }
+                </script>
+            @elseif($va['jenis'] == 'number')
+                <script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        var ctx = document.getElementById('myChart{{ $key }}{{ $ke }}').getContext('2d');
+                        var data = {
+                            labels: @json(array_keys($va['jawaban'])), // Labels berisi nama program studi
+                            datasets: [{
+                                label: 'Jumlah Alumni',
+                                data: @json(array_values($va['jawaban'])), // Data berisi jumlah alumni per program studi
+                                backgroundColor: generateRandomColorArray({{ count($va['jawaban']) }}),
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                borderWidth: 1
+                            }]
+                        };
+                        var options = {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        };
+                        var myChart = new Chart(ctx, {
+                            type: 'bar',
+                            data: data,
+                            options: options
+                        });
+                    });
 
-    </html>
+                    function generateRandomColorArray(length) {
+                        var colors = [];
+                        for (var i = 0; i < length; i++) {
+                            var color = 'rgba(' + Math.floor(Math.random() * 256) + ',' +
+                                Math.floor(Math.random() * 256) + ',' +
+                                Math.floor(Math.random() * 256) + ', 0.8)';
+                            colors.push(color);
+                        }
+                        return colors;
+                    }
+                </script>
+            @endif
+        @endforeach
+    @endforeach
 @endsection

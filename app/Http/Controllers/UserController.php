@@ -76,8 +76,89 @@ class UserController extends Controller
     }
     public function kuesioner_hasil()
     {
-        $pertanyaan = Kuesioner::with('pertanyaan')->get()->pluck('pertanyaan.0');
-        $program_studi =  [
+        // $pertanyaan = Kuesioner::with('pertanyaan')->get()->pluck('pertanyaan.0');
+        // $program_studi =  [
+        //     "Pendidikan Guru SD",
+        //     "Bimbingan dan Konseling",
+        //     "Pendidikan Kewarganegaraan",
+        //     "Pendidikan Jasmani, Kesehatan, dan Rekreasi",
+        //     "Bahasa Inggris",
+        //     "Matematika",
+        //     "Ekonomi",
+        //     "Sejarah",
+        //     "Akuntansi dan Keuangan",
+        //     "Teknologi Informasi dan Komunikasi",
+        //     "Teknik Otomotif",
+        //     "Perhotelan dan Jasa Pariwisata",
+        //     "Agribisnis Tanaman Pangan dan Holtikultura"
+        // ];
+        // $jawaban = [];
+
+        // foreach ($program_studi as $va) {
+        //     $jawaban[$va]["ya"] = 0;
+        //     $jawaban[$va]["tidak"] = 0;
+
+        //     foreach ($pertanyaan as $value) {
+        //         foreach ($value->jawaban as $v) {
+        //             if ($v->alumni->program_studi == $va) {
+        //                 if ($v->jawaban == "ya") {
+        //                     $jawaban[$va]["ya"]++;
+        //                 } else {
+        //                     $jawaban[$va]["tidak"]++;
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
+        // $jawabanSemua = ["ya" => 0, "tidak" => 0];
+
+        // foreach ($pertanyaan as $value) {
+        //     foreach ($value->jawaban as $v) {
+        //         // Assuming $v->alumni->program_studi is the program studi information
+        //         if ($v->jawaban == "ya") {
+        //             $jawabanSemua["ya"]++;
+        //         } else {
+        //             $jawabanSemua["tidak"]++;
+        //         }
+        //     }
+        // }
+        // $data = [
+        //     "jawaban" => $jawaban,
+        //     "semua" => $jawabanSemua
+        // ];
+        $data = [];
+        $kuesioner = Kuesioner::get();
+        foreach ($kuesioner as $key => $value) {
+            $data[$key] = [
+                'judul' => $value->judul,
+                'pertanyaan' => []
+            ];
+            foreach ($value->pertanyaan as $ke => $va) {
+                $data[$key]['pertanyaan'][$ke] = [
+                    'jenis' => $va->jenis,
+                    'pertanyaan' => $va->pertanyaan,
+                ];
+                if ($va->jenis == 'pilihan') {
+                    foreach (json_decode($va->pilihan_jawaban) as $k => $v) {
+                        $data[$key]['pertanyaan'][$ke]['jawaban'][$v] = 0;
+                    }
+                }
+                foreach ($va->jawaban as $k => $v) {
+                    if ($va->jenis == 'pilihan') {
+                        $data[$key]['pertanyaan'][$ke]['jawaban'][$v->jawaban]++;
+                    } else if ($va->jenis == 'number') {
+                        $data[$key]['pertanyaan'][$ke]['jawaban'][$v->jawaban] = isset($data[$key]['pertanyaan'][$ke]['jawaban'][$v->jawaban]) ? $data[$key]['pertanyaan'][$ke]['jawaban'][$v->jawaban] + 1 : 1;
+                    } else {
+                        $data[$key]['pertanyaan'][$ke]['jawaban'][$k] = $v->jawaban;
+                    }
+                }
+            }
+        }
+        return view('user.kuesioner_hasil', ["data" => $data]);
+    }
+    public function alumni_list()
+    {
+        $program_studi = [
             "Pendidikan Guru SD",
             "Bimbingan dan Konseling",
             "Pendidikan Kewarganegaraan",
@@ -92,45 +173,24 @@ class UserController extends Controller
             "Perhotelan dan Jasa Pariwisata",
             "Agribisnis Tanaman Pangan dan Holtikultura"
         ];
-        $jawaban = [];
 
-        foreach ($program_studi as $va) {
-            $jawaban[$va]["ya"] = 0;
-            $jawaban[$va]["tidak"] = 0;
+        $alumni = User::where('role', 1)->get(); // Ubah query sesuai kebutuhan
 
-            foreach ($pertanyaan as $value) {
-                foreach ($value->jawaban as $v) {
-                    if ($v->alumni->program_studi == $va) {
-                        if ($v->jawaban == "ya") {
-                            $jawaban[$va]["ya"]++;
-                        } else {
-                            $jawaban[$va]["tidak"]++;
-                        }
-                    }
-                }
+        $data = [];
+
+        foreach ($alumni as $alumnus) {
+            $tahun_lulus = $alumnus->tahun_lulus;
+
+            if (!isset($data[$tahun_lulus])) {
+                $data[$tahun_lulus] = array_combine($program_studi, array_fill(0, count($program_studi), 0));
             }
-        }
-        $jawabanSemua = ["ya" => 0, "tidak" => 0];
 
-        foreach ($pertanyaan as $value) {
-            foreach ($value->jawaban as $v) {
-                // Assuming $v->alumni->program_studi is the program studi information
-                if ($v->jawaban == "ya") {
-                    $jawabanSemua["ya"]++;
-                } else {
-                    $jawabanSemua["tidak"]++;
-                }
-            }
+            $program_studi_alumnus = $alumnus->program_studi; // Sesuaikan dengan atribut yang sesuai
+            $data[$tahun_lulus][$program_studi_alumnus]++;
         }
-        $data = [
-            "jawaban" => $jawaban,
-            "semua" => $jawabanSemua
-        ];
-        return view('user.kuesioner_hasil', ["data" => $data]);
-    }
-    public function alumni_list()
-    {
-        return view('user.alumni_list');
+        return view('user.alumni_list', [
+            'data' => $data
+        ]);
     }
     public function tentang()
     {
@@ -157,14 +217,14 @@ class UserController extends Controller
     public function profile_pekerjaan_tambah(Request $request)
     {
         Pekerjaan::create([
-            'alumni_id'=> Auth::user()->id,
-            'nama_perusahaan'=> $request->nama_perusahaan,
-            'jabatan'=> $request->jabatan,
-            'gaji'=> $request->gaji,
-            'tanggal_mulai_pekerjaan'=> $request->tanggal_mulai,
-            'tanggal_selesai_pekerjaan'=> $request->tanggal_berakhir,
-            'alasan_berhenti'=> $request->alasan_berhenti,
-            'rekomendasi'=> $request->rekomendasi,
+            'alumni_id' => Auth::user()->id,
+            'nama_perusahaan' => $request->nama_perusahaan,
+            'jabatan' => $request->jabatan,
+            'gaji' => $request->gaji,
+            'tanggal_mulai_pekerjaan' => $request->tanggal_mulai,
+            'tanggal_selesai_pekerjaan' => $request->tanggal_berakhir,
+            'alasan_berhenti' => $request->alasan_berhenti,
+            'rekomendasi' => $request->rekomendasi,
         ]);
         return back();
     }
