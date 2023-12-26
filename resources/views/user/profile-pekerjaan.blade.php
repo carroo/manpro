@@ -112,17 +112,17 @@
                             <div class="form-group mb-3">
                                 <label for="nama_perusahaan">Nama Perusahaan:</label>
                                 <input type="text" class="form-control" name="nama_perusahaan"
-                                    placeholder="Masukkan nama perusahaan">
+                                    placeholder="Masukkan nama perusahaan" required>
                             </div>
 
                             <div class="form-group mb-3">
                                 <label for="jabatan">Jabatan:</label>
-                                <input type="text" class="form-control" name="jabatan" placeholder="Masukkan jabatan">
+                                <input type="text" class="form-control" name="jabatan" placeholder="Masukkan jabatan" required>
                             </div>
 
                             <div class="form-group mb-3">
                                 <label for="gaji">Gaji:</label>
-                                <input type="number" class="form-control" name="gaji" placeholder="Masukkan gaji">
+                                <input type="number" class="form-control" name="gaji" placeholder="Masukkan gaji" required>
                             </div>
 
                             <div class="form-group mb-3">

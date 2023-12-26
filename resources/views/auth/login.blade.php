@@ -142,7 +142,7 @@
                         Copyright ©
                         <script>
                             document.write(new Date().getFullYear())
-                        </script> Created by Kel 3 Manpro
+                        </script> Created by Kel 2 Manpro
                     </p>
                 </div>
             </div>

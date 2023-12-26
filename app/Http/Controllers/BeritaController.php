@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Berita;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Contracts\Service\Attribute\Required;
 
 class BeritaController extends Controller
@@ -26,7 +27,7 @@ class BeritaController extends Controller
         if ($request->hasFile('gambar')) {
             $gambar = $request->file('gambar');
             $gambarPath = 'berita_upload/' . $gambar->getClientOriginalName();
-            $gambar->move(public_path(), $gambarPath);
+            $gambar->move(public_path('berita_upload'), $gambarPath);
         }
 
         Berita::create([
@@ -34,6 +35,7 @@ class BeritaController extends Controller
             'isi' => $request->input('isi'),
             'kategori' => $request->input('kategori'),
             'gambar' => $gambarPath,
+            'admin_id' => Auth::user()->id
         ]);
 
         return redirect()->route('berita')->with('success', 'News created successfully');
@@ -51,7 +53,7 @@ class BeritaController extends Controller
             $gambarPath = null;
             $gambar = $request->file('gambar');
             $gambarPath = 'berita_upload/' . $gambar->getClientOriginalName();
-            $gambar->move(public_path(), $gambarPath);
+            $gambar->move(public_path('berita_upload'), $gambarPath);
 
             // Update news with new image path
             $news->update([

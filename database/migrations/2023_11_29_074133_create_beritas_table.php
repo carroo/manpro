@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('gambar');
             $table->text('isi');
             $table->string('kategori');
+            $table->foreignId('alumni_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

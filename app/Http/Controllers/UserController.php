@@ -56,7 +56,7 @@ class UserController extends Controller
                 $filePath = $file->move(public_path('files'), $file->getClientOriginalName());
                 $jawaban->jawaban = $file->getClientOriginalName();
             } elseif ($validatedData['tipe_pertanyaan'][$index] === 'checkbox') {
-                $jawaban->jawaban = json_encode($validatedData['text_jawaban'][$index]);
+                $jawaban->jawaban = json_encode(array_values($validatedData['text_jawaban'][$index]));
             } else {
                 $jawaban->jawaban = $validatedData['text_jawaban'][$index];
             }
@@ -76,56 +76,6 @@ class UserController extends Controller
     }
     public function kuesioner_hasil()
     {
-        // $pertanyaan = Kuesioner::with('pertanyaan')->get()->pluck('pertanyaan.0');
-        // $program_studi =  [
-        //     "Pendidikan Guru SD",
-        //     "Bimbingan dan Konseling",
-        //     "Pendidikan Kewarganegaraan",
-        //     "Pendidikan Jasmani, Kesehatan, dan Rekreasi",
-        //     "Bahasa Inggris",
-        //     "Matematika",
-        //     "Ekonomi",
-        //     "Sejarah",
-        //     "Akuntansi dan Keuangan",
-        //     "Teknologi Informasi dan Komunikasi",
-        //     "Teknik Otomotif",
-        //     "Perhotelan dan Jasa Pariwisata",
-        //     "Agribisnis Tanaman Pangan dan Holtikultura"
-        // ];
-        // $jawaban = [];
-
-        // foreach ($program_studi as $va) {
-        //     $jawaban[$va]["ya"] = 0;
-        //     $jawaban[$va]["tidak"] = 0;
-
-        //     foreach ($pertanyaan as $value) {
-        //         foreach ($value->jawaban as $v) {
-        //             if ($v->alumni->program_studi == $va) {
-        //                 if ($v->jawaban == "ya") {
-        //                     $jawaban[$va]["ya"]++;
-        //                 } else {
-        //                     $jawaban[$va]["tidak"]++;
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
-        // $jawabanSemua = ["ya" => 0, "tidak" => 0];
-
-        // foreach ($pertanyaan as $value) {
-        //     foreach ($value->jawaban as $v) {
-        //         // Assuming $v->alumni->program_studi is the program studi information
-        //         if ($v->jawaban == "ya") {
-        //             $jawabanSemua["ya"]++;
-        //         } else {
-        //             $jawabanSemua["tidak"]++;
-        //         }
-        //     }
-        // }
-        // $data = [
-        //     "jawaban" => $jawaban,
-        //     "semua" => $jawabanSemua
-        // ];
         $data = [];
         $kuesioner = Kuesioner::get();
         foreach ($kuesioner as $key => $value) {
@@ -137,6 +87,7 @@ class UserController extends Controller
                 $data[$key]['pertanyaan'][$ke] = [
                     'jenis' => $va->jenis,
                     'pertanyaan' => $va->pertanyaan,
+                    'jawaban' => []
                 ];
                 if ($va->jenis == 'pilihan') {
                     foreach (json_decode($va->pilihan_jawaban) as $k => $v) {

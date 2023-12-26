@@ -10,7 +10,7 @@
     <meta content="" name="keywords">
 
     <!-- Favicons -->
-    <link href="{{ asset('user/assets/img/favicon.png') }}" rel="icon">
+    <link href="{{ asset('admin/assets/img/unesa.png') }}" rel="icon">
     <link href="{{ asset('user/assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
 
     <!-- Google Fonts -->
@@ -45,7 +45,7 @@
 
             <nav id="navbar" class="navbar">
                 <ul>
-                    <li><a class="getstarted scrollto" href="{{ route('login') }}">Sign In</a></li>
+                    {{-- <li><a class="getstarted scrollto" href="{{ route('login') }}">Sign In</a></li> --}}
                 </ul>
                 <i class="bi bi-list mobile-nav-toggle"></i>
             </nav><!-- .navbar -->
